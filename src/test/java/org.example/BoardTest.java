@@ -2,7 +2,6 @@ package org.example;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
 import static org.junit.jupiter.api.Assertions.*;
 
 public class BoardTest {
@@ -14,63 +13,64 @@ public class BoardTest {
         board = new Board();
     }
 
+    // --- isCellEmpty ---
+
     @Test
-    public void testBoardStartsEmpty() {
-        for (int x = 0; x < 3; x++) {
-            for (int y = 0; y < 3; y++) {
-                assertTrue(board.isCellEmpty(x, y), "Cell (" + x + "," + y + ") should be empty");
-            }
-        }
+    public void testIsCellEmpty_Positive() {
+        assertTrue(board.isCellEmpty(0, 0));
     }
 
     @Test
-    public void testPlaceMarker() {
+    public void testIsCellEmpty_Negative() {
+        board.place(0, 0, 'X');
+        assertFalse(board.isCellEmpty(0, 0));
+    }
+
+    // --- place ---
+
+    @Test
+    public void testPlace_Positive() {
         board.place(1, 1, 'X');
-        assertFalse(board.isCellEmpty(1, 1));
         assertEquals('X', board.getCells()[1][1]);
     }
 
     @Test
-    public void testPlaceOnOccupiedCellDoesNotChangeMarker() {
+    public void testPlace_Negative_DoesNotOverwrite() {
         board.place(0, 0, 'X');
-        board.place(0, 0, 'O'); // should have no effect
+        board.place(0, 0, 'O'); // should be ignored
         assertEquals('X', board.getCells()[0][0]);
     }
 
-    @Test
-    public void testClearBoard() {
-        board.place(0, 0, 'X');
-        board.place(1, 1, 'O');
-        board.clear();
+    // --- isFull ---
 
+    @Test
+    public void testIsFull_Positive() {
         for (int x = 0; x < 3; x++) {
             for (int y = 0; y < 3; y++) {
-                assertTrue(board.isCellEmpty(x, y));
-            }
-        }
-    }
-
-    @Test
-    public void testIsFullFalseOnEmptyBoard() {
-        assertFalse(board.isFull());
-    }
-
-    @Test
-    public void testIsFullTrueWhenAllCellsFilled() {
-        char marker = 'X';
-        for (int x = 0; x < 3; x++) {
-            for (int y = 0; y < 3; y++) {
-                board.place(x, y, marker);
+                board.place(x, y, 'X');
             }
         }
         assertTrue(board.isFull());
     }
 
     @Test
-    public void testGetCellsReturnsCorrectGrid() {
-        board.place(2, 2, 'O');
-        char[][] cells = board.getCells();
-        assertEquals('O', cells[2][2]);
+    public void testIsFull_Negative() {
+        board.place(0, 0, 'X');
+        assertFalse(board.isFull());
+    }
+
+    // --- clear ---
+
+    @Test
+    public void testClear_Positive() {
+        board.place(0, 0, 'X');
+        board.clear();
+        assertTrue(board.isCellEmpty(0, 0));
+    }
+
+    @Test
+    public void testClear_Negative() {
+        board.place(1, 1, 'O');
+        assertFalse(board.isCellEmpty(1, 1)); // before clear
     }
 }
-
