@@ -38,17 +38,19 @@ public class Board {
     }
 
     public void print() {
-        System.out.println("  0 1 2");
+        System.out.println("▁▁▁▁▁▁");
         for (int i = 0; i < 3; i++) {
-            System.out.print(i + " ");
+            System.out.print("|");
             for (int j = 0; j < 3; j++) {
-                System.out.print(cells[i][j]);
-                if (j < 2) System.out.print("|");
+                char c = cells[i][j];
+                System.out.print(c == ' ' ? " " : c);
+                System.out.print("|");
             }
             System.out.println();
-            if (i < 2) System.out.println("  -----");
         }
+        System.out.println("▔▔▔▔");
     }
+
 
     public char[][] getCells() {
         return cells;
