@@ -18,11 +18,15 @@ public class TicTacToe {
     public void start() {
         Scanner scanner = new Scanner(System.in);
         board.clear();
-        board.print();
 
         while (!board.isFull()) {
-            System.out.println("Player " + currentPlayer.getMarker() + ", enter your move (row and column): ");
+            System.out.println("Current Player: " + currentPlayer.getMarker());
+            board.print();
+
+            System.out.println("row (0-2): ");
             int x = scanner.nextInt();
+
+            System.out.println("column (0-2): ");
             int y = scanner.nextInt();
 
             if (x < 0 || x > 2 || y < 0 || y > 2 || !board.isCellEmpty(x, y)) {
