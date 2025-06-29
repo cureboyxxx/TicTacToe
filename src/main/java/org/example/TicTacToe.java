@@ -53,7 +53,7 @@ public class TicTacToe {
         currentPlayer = (currentPlayer == player1) ? player2 : player1;
     }
 
-    private boolean hasWinner() {
+    boolean hasWinner() {
         char[][] cells = board.getCells();
         char m = currentPlayer.getMarker();
 
