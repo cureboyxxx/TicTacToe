@@ -35,6 +35,7 @@ public class TicTacToe {
 
             if (hasWinner()) {
                 System.out.println("Player " + currentPlayer.getMarker() + " wins!");
+                System.out.println("Player " + getOpponent().getMarker() + " loses!");
                 return;
             }
 
@@ -42,6 +43,10 @@ public class TicTacToe {
         }
 
         System.out.println("It's a draw!");
+    }
+
+    private Player getOpponent() {
+        return (currentPlayer == player1) ? player2 : player1;
     }
 
     private void switchCurrentPlayer() {
