@@ -18,15 +18,11 @@ public class TicTacToe {
     public void start() {
         Scanner scanner = new Scanner(System.in);
         board.clear();
+        board.print();
 
         while (!board.isFull()) {
-            System.out.println("Current Player: " + currentPlayer.getMarker());
-            board.print();
-
-            System.out.println("row (0-2): ");
+            System.out.println("Player " + currentPlayer.getMarker() + ", enter your move (row and column): ");
             int x = scanner.nextInt();
-
-            System.out.println("column (0-2): ");
             int y = scanner.nextInt();
 
             if (x < 0 || x > 2 || y < 0 || y > 2 || !board.isCellEmpty(x, y)) {
@@ -39,6 +35,7 @@ public class TicTacToe {
 
             if (hasWinner()) {
                 System.out.println("Player " + currentPlayer.getMarker() + " wins!");
+                System.out.println("Player " + getOpponent().getMarker() + " loses!");
                 return;
             }
 
@@ -48,11 +45,15 @@ public class TicTacToe {
         System.out.println("It's a draw!");
     }
 
+    private Player getOpponent() {
+        return (currentPlayer == player1) ? player2 : player1;
+    }
+
     private void switchCurrentPlayer() {
         currentPlayer = (currentPlayer == player1) ? player2 : player1;
     }
 
-    private boolean hasWinner() {
+    boolean hasWinner() {
         char[][] cells = board.getCells();
         char m = currentPlayer.getMarker();
 
