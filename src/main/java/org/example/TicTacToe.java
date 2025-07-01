@@ -35,7 +35,6 @@ public class TicTacToe {
             }
 
             board.place(x, y, currentPlayer.getMarker());
-            board.print();
 
             if (hasWinner()) {
                 System.out.println("Player " + currentPlayer.getMarker() + " wins!");
