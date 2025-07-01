@@ -18,16 +18,30 @@ public class TicTacToe {
     public void start() {
         Scanner scanner = new Scanner(System.in);
         board.clear();
+        int x, y;
+        String input;
 
         while (!board.isFull()) {
             System.out.println("Current Player: " + currentPlayer.getMarker());
             board.print();
 
             System.out.println("row (0-2): ");
-            int x = scanner.nextInt();
+            input = scanner.nextLine();
+            try {
+                x = Integer.parseInt(input);    // versuchen, in int umzuwandeln
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid input. Try again.");
+                continue;
+            }
 
             System.out.println("column (0-2): ");
-            int y = scanner.nextInt();
+            input = scanner.nextLine();
+            try {
+                y = Integer.parseInt(input);    // versuchen, in int umzuwandeln
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid input. Try again.");
+                continue;
+            }
 
             if (x < 0 || x > 2 || y < 0 || y > 2 || !board.isCellEmpty(x, y)) {
                 System.out.println("Invalid move. Try again.");
@@ -37,6 +51,7 @@ public class TicTacToe {
             board.place(x, y, currentPlayer.getMarker());
 
             if (hasWinner()) {
+                board.print();
                 System.out.println("Player " + currentPlayer.getMarker() + " wins!");
                 System.out.println("Player " + getOpponent().getMarker() + " loses!");
                 return;
