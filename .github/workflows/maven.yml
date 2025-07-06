@@ -9,30 +9,54 @@
 name: Java CI with Maven
 
 on:
+  push:
+    branches:
+      - 'feature/**'     # Run tests on every push to a feature branch
   pull_request:
-    branches: [ "main" ]
+    branches:
+      - 'main'           # Trigger full build when a PR targets main
 
 jobs:
-  build:
-
+  test-feature-branch:
+    if: github.event_name == 'push'
     runs-on: ubuntu-latest
+    name: Run tests on feature branches
 
     steps:
-    - name: check out Git repository
-      uses: actions/checkout@v4
+      - name: Check out repository
+        uses: actions/checkout@v4
 
-    - name: Set up JDK 17
-      uses: actions/setup-java@v4
-      with:
-        java-version: '17'
-        distribution: 'temurin'
-        cache: maven
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          cache: maven
 
-    - name: Build with Maven
-      run: mvn -B package --file pom.xml
+      - name: Run tests only
+        run: mvn -B clean test
 
-    - name: Upload JAR as Artifact
-      uses: actions/upload-artifact@v4
-      with:
-        name: TicTacToe
-        path: target/*.jar
+  build-main-pr:
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    name: Build and package on PR to main
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          cache: maven
+
+      - name: Run full Maven build
+        run: mvn -B clean verify
+
+      - name: Upload JAR as Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: TicTacToe
+          path: target/*.jar
